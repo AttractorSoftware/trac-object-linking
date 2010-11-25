@@ -1,0 +1,57 @@
+#objectLinks
+{
+    clear:both;
+}
+
+#objectLinks ul.links
+{
+    list-style-image: url("li-dash.gif");
+    clear:left;
+    width:50%;
+}
+
+#objectLinks .create_subtask_links ul
+{
+    display:inline-block;
+    list-style: none;
+    margin: 0 0 1em 0;
+    padding:0;
+}
+
+#objectLinks .create_subtask_links li
+{
+    display:inline;
+    margin:0 0 1em 0;
+}
+
+#objectLinks h2
+{
+    float:left;
+    margin: 0.5em 10px 0.25em 0.25em;
+}
+
+#objectLinks form
+{
+    float:right;
+    margin: 0.5em 10px 0.25em 200px;
+}
+
+#objectLinks form input[name="target"]
+{
+    width:200px;
+}
+
+#objectLinks form input[name="comment"]
+{
+    width:200px;
+}
+
+#objectLinks form input[name="summary"]
+{
+    width:400px;
+}
+
+#objectLinks .comment
+{
+    font-style:italic;
+}
