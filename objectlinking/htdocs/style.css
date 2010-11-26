@@ -15,19 +15,12 @@
     margin:0.2em 0 0 0;
 }
 
-#objectLinks .create_subtask_links ul
-{
-    display:inline-block;
-    list-style: none;
-    margin: 1em 0 1em 0;
-    padding:0;
-}
-
-#objectLinks .create_subtask_links li
+#objectLinks .create_subtask_links a
 {
     display:inline;
-    margin:0 0 1em 0;
+    padding:0 0.2em;
 }
+
 
 #objectLinks h2
 {
@@ -39,6 +32,7 @@
 {
     float:right;
     margin: 0.5em 10px 0.25em 10px;
+    width:30%;
 }
 
 #objectLinks form input[name="target"]

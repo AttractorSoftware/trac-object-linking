@@ -24,16 +24,12 @@
             <tr>
                 <td colspan="2">
                     <div class="create_subtask_links">
-                    Add subtask in:
-                    <ul>
-                        <li py:for="component in components" value="$component">
-                            <a href="${href.newticket(type=task, summary=component + ' for ' + ticket.summary, component=component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:parent&quot;)}">$component</a>,
-                        </li>
-                    </ul>.
-                        <div>
+                        Add subtask in:
+                        <a py:for="component in components" value="$component" href="${href.newticket(type=task, summary=component + ' for ' + ticket.summary, component=component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:parent&quot;)}">$component</a>.
+                        <p>
                             <a href="${href.newticket(type=defect, component=ticket.component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}">Report a bug</a>,
                             <a href="${href.newticket(type=enhancement, component=ticket.component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}">suggest an enhancement</a>.
-                        </div>
+                        </p>
                     </div>
                 </td>
             </tr>
