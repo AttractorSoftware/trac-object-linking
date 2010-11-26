@@ -4,7 +4,7 @@ from trac.core import *
 from trac.env import IEnvironmentSetupParticipant
 from trac.web.chrome import ITemplateProvider
 
-db_version = 2
+db_version = 1
 upgrades = [
     [],
     [ #-- Add the project_milestones table for mapping milestones to projects
