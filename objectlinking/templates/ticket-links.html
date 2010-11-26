@@ -38,7 +38,7 @@
     <ul class="links">
         <li py:for="link in objectlinks.forth_links">
             ${link_types[link.type]['forth_label']}
-            <a href="${href()}/$link.target_type/$link.target_id">
+            <a href="${href(link.target_type,link.target_id)}">
                 $link.target_type:$link.target_id
                 <span py:if="link.target_title" class="linkTitle"> $link.target_title </span>
             </a>
@@ -47,7 +47,7 @@
         </li>
         <li py:for="link in objectlinks.back_links">
             ${link_types[link.type]['back_label']}
-            <a href="${href()}/$link.source_type/$link.source_id">
+            <a href="${href(link.source_type,link.source_id)}">
                 $link.source_type:$link.source_id <span py:if="link.source_title" class="linkTitle"> $link.source_title </span>
             </a>
             <span py:if="link.comment" class="comment"> &mdash; $link.comment</span>
