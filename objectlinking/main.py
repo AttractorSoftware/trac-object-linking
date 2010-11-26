@@ -11,6 +11,9 @@ from genshi.builder import tag
 import json
 import trac
 from pprint import pprint
+from trac.web.href import Href
+from trac.util.datefmt import parse_date
+import re
 
 
 __author__ = 'kosyakov'
@@ -23,30 +26,51 @@ def get_link_types():
                 }
     return link_types
 
-class CreateLinkController(object):
 
+class LinkManipulator(object):
     def __init__(self, env):
         self.env = env
+        self.ticket_RE = re.compile(r'#(\d+)', re.U)
 
     def parse_object_reference(self, req_args_source_):
-        data = [x.strip() for x in req_args_source_.split(':')]
-        type, id = (data[0], data[1])
+        print "Parsing ", req_args_source_
+        match = self.ticket_RE.match(req_args_source_)
+        if match:
+            type = 'ticket'
+            id = match.groups()[0]
+        else:
+            data = [x.strip() for x in req_args_source_.split(':')]
+            type, id = (data[0], data[1])
         return type, id
 
     def __call__(self, req):
         source_type, source_id = self.parse_object_reference(req.args['source'])
         target_type, target_id = self.parse_object_reference(req.args['target'])
-        comment = req.args['comment']
+        comment = req.args.get('comment',"")
         type = req.args['type']
-        self.create_link(source_type, source_id, target_type, target_id, type, comment)
-        req.redirect(req.args['return'])
+        self.do_the_work(source_type, source_id, target_type, target_id, type, comment)
+        req.redirect(req.args['return_url'])
         return ()
 
-    def create_link(self, source_type, source_id, target_type, target_id, type, comment):
+    def do_the_work(self, source_type, source_id, target_type, target_id, type, comment):
+        pass
+
+class CreateLinkController(LinkManipulator):
+
+    def do_the_work(self, source_type, source_id, target_type, target_id, type, comment):
         db = self.env.get_read_db()
         cursor = db.cursor()
         INSERT_LINK_SQL = "INSERT INTO objectlink(source_type, source_id, target_type, target_id, link_type, comment) VALUES (%s,%s,%s,%s,%s, %s)"
         cursor.execute(INSERT_LINK_SQL, (source_type, source_id, target_type, target_id, type, comment))
+        db.commit()
+
+class DeleteLinkController(LinkManipulator):
+
+    def do_the_work(self, source_type, source_id, target_type, target_id, type, comment):
+        db = self.env.get_read_db()
+        cursor = db.cursor()
+        INSERT_LINK_SQL = "DELETE FROM objectlink WHERE source_type = %s AND source_id = %s AND target_type = %s AND target_id = %s AND link_type = %s"
+        cursor.execute(INSERT_LINK_SQL, (source_type, source_id, target_type, target_id, type))
         db.commit()
 
 class TicketLinksTransformer(object):
@@ -61,6 +85,7 @@ class TicketLinksTransformer(object):
         data['objectlinks'] = self.get_links_for('ticket', ticket_id)
         data['link_types'] = get_link_types()
         data['components'] = [component.name for component in trac.ticket.model.Component.select(self.env)]
+        data['return_url'] = req.href.ticket(ticket_id)
         template = chrome.load_template('ticket-links.html')
         content_stream = template.generate(**(chrome.populate_data(req, data)))
         add_javascript(req,'objectlinking/jquery-ui-autocomplete.js')
@@ -90,12 +115,9 @@ class TicketLinksTransformer(object):
                 'back_links':back_links,
                 'forth_links':forth_links,
                 }
-        pprint(links, width=190)
         return links
 
     def _add_object_titles(self, links):
-        print("inside the title adder")
-        pprint(links, width=160)
         data = {}
         for link in links:
             if link['source_type'] not in data: data[link['source_type']] = []
@@ -105,8 +127,6 @@ class TicketLinksTransformer(object):
         for type_name in data:
             if type_name == 'ticket':
                 ticket_titles = self._get_ticket_titles(data[type_name])
-                print "Got titles"
-                pprint(ticket_titles, width=190)
                 for link in links:
                     source_id = int(link['source_id'])
                     target_id = int(link['target_id'])
@@ -219,6 +239,8 @@ class ObjectLinking(Component):
         controller = None
         if path_info == 'create':
             controller = CreateLinkController(self.env)
+        if path_info == 'delete':
+            controller = DeleteLinkController(self.env)
         if path_info == 'search':
             controller = SearchObjectsController(self.env)
         return controller
@@ -236,7 +258,7 @@ class ObjectLinking(Component):
         if self.link_info:
             target_type, target_id, type = [x.strip() for x in self.link_info.split(":")]
             add_link = CreateLinkController(self.env)
-            add_link.create_link('ticket',ticket.id,target_type, target_id,type, None)
+            add_link.do_the_work('ticket',ticket.id,target_type, target_id,type, None)
             self.link_info = None
 
 

@@ -7,14 +7,19 @@
 {
     list-style-image: url("li-dash.gif");
     clear:left;
-    width:50%;
+    margin:0.2em 10px 0 0.2em;
+    padding:0 0 0 16px;
+}
+#objectLinks ul.links li
+{
+    margin:0.2em 0 0 0;
 }
 
 #objectLinks .create_subtask_links ul
 {
     display:inline-block;
     list-style: none;
-    margin: 0 0 1em 0;
+    margin: 1em 0 1em 0;
     padding:0;
 }
 
@@ -33,7 +38,7 @@
 #objectLinks form
 {
     float:right;
-    margin: 0.5em 10px 0.25em 200px;
+    margin: 0.5em 10px 0.25em 10px;
 }
 
 #objectLinks form input[name="target"]
@@ -54,4 +59,16 @@
 #objectLinks .comment
 {
     font-style:italic;
+}
+
+#objectLinks a.delete
+{
+    text-decoration:none;
+    border:none;
+    font-weight:bold;
+}
+
+.ticket #attachments
+{
+    clear:both;
 }
