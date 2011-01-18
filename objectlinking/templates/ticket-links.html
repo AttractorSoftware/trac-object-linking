@@ -1,40 +1,5 @@
 <div xmlns="http://www.w3.org/1999/xhtml" id="objectLinks" xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude">
     <h2><a name="ticket-links">Links</a></h2>
-    <form id="link_ticket" action="${href.link()}/create">
-        <input type="hidden" name="source" value="ticket:$ticket.id" />
-        <input type="hidden" name="return_url" value="$return_url" />
-        <h3>Add link:</h3>
-        <table>
-            <tr>
-                <td>
-                    <select name="type">
-                       <option py:for="lt in link_types" value="$lt">${link_types[lt]['forth_label']}</option>
-                    </select>
-                </td>
-                <td><input id="linkTarget" type="text" name="target" value="" /></td>
-            </tr>
-            <tr>
-                <td>with comment</td>
-                <td><input type="text" name="comment" value="" /></td>
-            </tr>
-            <tr>
-                <td></td>
-                <td><input type="submit" value="Add Link"/></td>
-            </tr>
-            <tr>
-                <td colspan="2">
-                    <div class="create_subtask_links">
-                        Add subtask in:
-                        <a py:for="component in components" value="$component" href="${href.newticket(type=task, summary=component + ' for ' + ticket.summary, component=component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:parent&quot;)}">$component</a>.
-                        <p>
-                            <a href="${href.newticket(type=defect, component=ticket.component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}">Report a bug</a>,
-                            <a href="${href.newticket(type=enhancement, component=ticket.component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}">suggest an enhancement</a>.
-                        </p>
-                    </div>
-                </td>
-            </tr>
-        </table>
-    </form>
     <ul class="links">
         <li py:for="link in objectlinks.forth_links">
             ${link_types[link.type]['forth_label']}
@@ -54,6 +19,29 @@
             <a href="${href.link('delete',return_url=return_url,target=link['target_type'] + ':' + str(link['target_id']),type=link.type,source=link['source_type'] + ':' + str(link['source_id']) )}" title="Delete this link" class="delete">&times;</a>
         </li>
     </ul>
+
+    <div class="quickLinks">
+        <p>
+	    	<h3>Quick links:</h3>
+            <a href="${href.newticket(type='defect', component=ticket.component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}">report a bug</a>,
+            <a href="${href.newticket(type='enhancement', component=ticket.component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}">suggest an enhancement</a>,
+        or add subtask in
+        <a py:for="component in components" value="$component" href="${href.newticket(type='task', summary=component + ' for ' + ticket.summary + ' (#' + str(ticket.id) + ')', component=component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:parent&quot;)}">$component,</a>.
+        </p>
+    </div>
+
+    <form id="link_ticket" action="${href.link()}/create">
+    	<div class="form">
+	        <input type="hidden" name="source" value="ticket:$ticket.id" />
+	        <input type="hidden" name="return_url" value="$return_url" />
+	        <h3>Add link:</h3> this ticket 
+	        <select name="type">
+	           <option py:for="lt in link_types" value="$lt">${link_types[lt]['forth_label']}</option>
+	        </select>
+			<input id="linkTarget" type="text" name="target" value="" />, comment<input type="text" name="comment" value="" />
+			<input type="submit" value="Add Link"/>
+		</div>
+    </form>
 
     <script type="text/javascript">
     base_url = "${href.link('search')}";

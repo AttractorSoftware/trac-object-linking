@@ -5,9 +5,9 @@
 
 #objectLinks ul.links
 {
-    list-style-image: url("li-dash.gif");
-    clear:left;
-    margin:0.2em 10px 0 0.2em;
+    clear:both;
+    list-style-type:circle;
+    margin:0.2em 10px 0 10px;
     padding:0 0 0 16px;
 }
 #objectLinks ul.links li
@@ -15,39 +15,38 @@
     margin:0.2em 0 0 0;
 }
 
-#objectLinks .create_subtask_links a
+#objectLinks .quickLinks a
 {
     display:inline;
     padding:0 0.2em;
 }
 
 
+#objectLinks h3
+{
+	display:inline;
+	font-size:100%;
+	font-weight:bold;
+}
+
 #objectLinks h2
 {
-    float:left;
     margin: 0.5em 10px 0.25em 0.25em;
 }
 
 #objectLinks form
 {
-    float:right;
-    margin: 0.5em 10px 0.25em 10px;
-    width:30%;
+    margin: 10px 0;
 }
 
 #objectLinks form input[name="target"]
 {
-    width:200px;
+    width:25%;
 }
 
 #objectLinks form input[name="comment"]
 {
-    width:200px;
-}
-
-#objectLinks form input[name="summary"]
-{
-    width:400px;
+    width:25%;
 }
 
 #objectLinks .comment
@@ -65,4 +64,9 @@
 .ticket #attachments
 {
     clear:both;
+}
+
+#objectLinks div
+{
+	margin-left:10px;
 }
