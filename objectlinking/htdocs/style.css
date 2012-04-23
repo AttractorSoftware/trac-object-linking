@@ -6,14 +6,27 @@
 #objectLinks ul.links
 {
     clear:both;
-    list-style-type:circle;
+/*    list-style-type:circle; */
     margin:0.2em 10px 0 10px;
-    padding:0 0 0 16px;
+    padding:0 0 0 80px;
+    margin: 1em 1em 2em 1em;
 }
 #objectLinks ul.links li
 {
     margin:0.2em 0 0 0;
+    font-size:110%;
 }
+
+/*
+#objectLinks .quickLinks
+{
+    clear: none;
+    float: left;
+    left: 150px;
+    width: 1000px;
+    font-size:80%;
+}
+*/
 
 #objectLinks .quickLinks a
 {
@@ -32,11 +45,20 @@
 #objectLinks h2
 {
     margin: 0.5em 10px 0.25em 0.25em;
+    width:200px;
+}
+
+#objectLinks h2
+{
+    clear: none;
+    float: left;
+    margin: 0.5em 10px 0.25em 0.25em;
+    width: 100px;
 }
 
 #objectLinks form
 {
-    margin: 10px 0;
+    clear:both;
 }
 
 #objectLinks form input[name="target"]

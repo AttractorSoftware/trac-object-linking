@@ -1,5 +1,5 @@
 <div xmlns="http://www.w3.org/1999/xhtml" id="objectLinks" xmlns:py="http://genshi.edgewall.org/" xmlns:xi="http://www.w3.org/2001/XInclude">
-    <h2><a name="ticket-links">Links</a></h2>
+    <h2><a name="ticket-links">Ссылки</a></h2>
     <ul class="links">
         <li py:for="link in objectlinks.forth_links">
             ${link_types[link.type]['forth_label']}
@@ -20,15 +20,6 @@
         </li>
     </ul>
 
-    <div class="quickLinks">
-        <p>
-	    	<h3>Quick links:</h3>
-            <a href="${href.newticket(type='defect', component=ticket.component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}">report a bug</a>,
-            <a href="${href.newticket(type='enhancement', component=ticket.component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}">suggest an enhancement</a>,
-        or add subtask in
-        <a py:for="component in components" value="$component" href="${href.newticket(type='task', summary=component + ' for ' + ticket.summary + ' (#' + str(ticket.id) + ')', component=component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:parent&quot;)}">$component,</a>.
-        </p>
-    </div>
 
     <form id="link_ticket" action="${href.link()}/create">
     	<div class="form">
@@ -42,6 +33,18 @@
 			<input type="submit" value="Add Link"/>
 		</div>
     </form>
+
+    <div class="quickLinks">
+        <p>
+	    	<h3>Quick links:</h3>
+            <a href="${href.newticket(type='issue', component=ticket.component, milestone=ticket.milestone, summary='Issue in ' + ticket.summary + ' (#' + str(ticket.id) + ')', linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}"> описать проблему</a>,
+            <a href="${href.newticket(type='defect', component=ticket.component, milestone=ticket.milestone, summary='Defect in ' + ticket.summary + ' (#' + str(ticket.id) + ')' , linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}">описать дефект (баг)</a>,
+            <a href="${href.newticket(type='enhancement', component=ticket.component, milestone=ticket.milestone, summary='Enhancement for' + ticket.summary + ' (#' + str(ticket.id) + ')',linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}">предложить улучшение</a>,
+            <a href="${href.newticket(type='task', component=ticket.component, milestone=ticket.milestone, summary='Task for ' + ticket.summary + ' (#' + str(ticket.id) + ')', linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}">создать связанную задачу</a>,
+        или создать подзадачу в 
+        <a py:for="component in components" value="$component" href="${href.newticket(type='task', summary=component + ' for ' + ticket.summary + ' (#' + str(ticket.id) + ')', component=component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:parent&quot;)}">$component,</a>.
+        </p>
+    </div>
 
     <script type="text/javascript">
     base_url = "${href.link('search')}";

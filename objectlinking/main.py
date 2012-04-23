@@ -21,6 +21,7 @@ __author__ = 'kosyakov'
 def get_link_types():
     link_types={
                 'relates':{'forth_label':"relates to", 'back_label':"relates to"},
+                'depends':{'forth_label':"depends on", 'back_label':"is a dependancy for"},
                 'parent':{'forth_label':"is subtask of", 'back_label':"has subtask"},
                 'duplicate' :{'forth_label':"is duplicate of", 'back_label':"has duplicate in"},
                 }
@@ -33,7 +34,6 @@ class LinkManipulator(object):
         self.ticket_RE = re.compile(r'#(\d+)', re.U)
 
     def parse_object_reference(self, req_args_source_):
-        print "Parsing ", req_args_source_
         match = self.ticket_RE.match(req_args_source_)
         if match:
             type = 'ticket'
