@@ -15,7 +15,6 @@ setup(
     entry_points = {
         'trac.plugins': [
                 'objectlinking.main = objectlinking.main',
-                'objectlinking.actions = objectlinking.actions',
                 'objectlinking.environment = objectlinking.environment',
         ]
     },

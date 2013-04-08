@@ -55,23 +55,26 @@ class LinkManipulator(object):
     def do_the_work(self, source_type, source_id, target_type, target_id, type, comment):
         pass
 
+
 class CreateLinkController(LinkManipulator):
 
     def do_the_work(self, source_type, source_id, target_type, target_id, type, comment):
-        db = self.env.get_read_db()
-        cursor = db.cursor()
-        INSERT_LINK_SQL = "INSERT INTO objectlink(source_type, source_id, target_type, target_id, link_type, comment) VALUES (%s,%s,%s,%s,%s, %s)"
-        cursor.execute(INSERT_LINK_SQL, (source_type, source_id, target_type, target_id, type, comment))
-        db.commit()
+        with self.env.db_transaction as db:
+            cursor = db.cursor()
+            INSERT_LINK_SQL = "INSERT INTO objectlink(source_type, source_id, target_type, target_id, link_type, comment) VALUES (%s,%s,%s,%s,%s, %s)"
+            cursor.execute(INSERT_LINK_SQL, (source_type, source_id, target_type, target_id, type, comment))
+            db.commit()
+
 
 class DeleteLinkController(LinkManipulator):
 
     def do_the_work(self, source_type, source_id, target_type, target_id, type, comment):
-        db = self.env.get_read_db()
-        cursor = db.cursor()
-        INSERT_LINK_SQL = "DELETE FROM objectlink WHERE source_type = %s AND source_id = %s AND target_type = %s AND target_id = %s AND link_type = %s"
-        cursor.execute(INSERT_LINK_SQL, (source_type, source_id, target_type, target_id, type))
-        db.commit()
+        with self.env.db_transaction as db:
+            cursor = db.cursor()
+            INSERT_LINK_SQL = "DELETE FROM objectlink WHERE source_type = %s AND source_id = %s AND target_type = %s AND target_id = %s AND link_type = %s"
+            cursor.execute(INSERT_LINK_SQL, (source_type, source_id, target_type, target_id, type))
+            db.commit()
+
 
 class TicketLinksTransformer(object):
 
@@ -88,6 +91,7 @@ class TicketLinksTransformer(object):
         data['return_url'] = req.href.ticket(ticket_id)
         template = chrome.load_template('ticket-links.html')
         content_stream = template.generate(**(chrome.populate_data(req, data)))
+        chrome.add_jquery_ui(req)
         add_javascript(req,'objectlinking/jquery-ui-autocomplete.js')
         add_javascript(req,'objectlinking/search-links.js')
         add_stylesheet(req, 'objectlinking/style.css')
