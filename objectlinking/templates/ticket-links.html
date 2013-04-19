@@ -43,6 +43,7 @@
             <a href="${href.newticket(type='task', component=ticket.component, milestone=ticket.milestone, summary='Task for ' + ticket.summary + ' (#' + str(ticket.id) + ')', linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:relates&quot;)}">создать связанную задачу</a>,
         или создать подзадачу в 
         <a py:for="component in components" value="$component" href="${href.newticket(type='task', summary=component + ' for ' + ticket.summary + ' (#' + str(ticket.id) + ')', component=component, linkinfo=&quot;ticket:&quot; + str(ticket.id) + &quot;:parent&quot;)}">$component,</a>.
+        <input type="hidden" id="extractTicketLink" value="${href.newticket(type=ticket.type, component=ticket.component, milestone=ticket.milestone, version=ticket.version, summary='Extracted ticket for #' + str(ticket.id), linkinfo='ticket:' + str(ticket.id) + ':parent')}" />
         </p>
     </div>
 

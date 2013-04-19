@@ -94,6 +94,7 @@ class TicketLinksTransformer(object):
         chrome.add_jquery_ui(req)
         add_javascript(req,'objectlinking/jquery-ui-autocomplete.js')
         add_javascript(req,'objectlinking/search-links.js')
+        add_javascript(req,'objectlinking/extract-ticket.js')
         add_stylesheet(req, 'objectlinking/style.css')
         add_stylesheet(req, 'objectlinking/jquery-ui-custom.css')
         return Transformer('//div[@id="ticket"]').after(content_stream)
