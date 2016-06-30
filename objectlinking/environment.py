@@ -11,9 +11,9 @@ upgrades = [
       """DROP TABLE IF EXISTS objectlink;""",
       """CREATE TABLE objectlink (
           source_type varchar(64) NOT NULL,
-          source_id varchar(255) NOT NULL,
+          source_id varchar(64) NOT NULL,
           target_type varchar(64) NOT NULL,
-          target_id varchar(255) NOT NULL,
+          target_id varchar(64) NOT NULL,
           link_type varchar(32) NOT NULL,
           comment text,
           PRIMARY KEY (source_type, source_id, target_type, target_id, link_type)
