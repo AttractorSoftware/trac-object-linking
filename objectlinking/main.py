@@ -5,7 +5,7 @@ import re
 import pkg_resources
 from trac.ticket.api import ITicketChangeListener
 from trac.web.api import    RequestDone
-from trac.web.chrome import  Chrome, add_stylesheet, add_javascript
+from trac.web.chrome import  Chrome, add_stylesheet, add_script
 from genshi.filters import Transformer
 from genshi.builder import tag
 import json
@@ -92,9 +92,9 @@ class TicketLinksTransformer(object):
         template = chrome.load_template('ticket-links.html')
         content_stream = template.generate(**(chrome.populate_data(req, data)))
         chrome.add_jquery_ui(req)
-        add_javascript(req,'objectlinking/jquery-ui-autocomplete.js')
-        add_javascript(req,'objectlinking/search-links.js')
-        add_javascript(req,'objectlinking/extract-ticket.js')
+        add_script(req,'objectlinking/jquery-ui-autocomplete.js')
+        add_script(req,'objectlinking/search-links.js')
+        add_script(req,'objectlinking/extract-ticket.js')
         add_stylesheet(req, 'objectlinking/style.css')
         add_stylesheet(req, 'objectlinking/jquery-ui-custom.css')
         return Transformer('//div[@id="ticket"]').after(content_stream)
