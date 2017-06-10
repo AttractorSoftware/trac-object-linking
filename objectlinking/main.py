@@ -1,7 +1,6 @@
 from trac.core import Component, implements
 from trac.web.api import IRequestHandler, ITemplateStreamFilter, IRequestFilter
 from trac.web.chrome import ITemplateProvider
-import re
 import pkg_resources
 from trac.ticket.api import ITicketChangeListener
 from trac.web.api import    RequestDone
@@ -10,9 +9,6 @@ from genshi.filters import Transformer
 from genshi.builder import tag
 import json
 import trac
-from pprint import pprint
-from trac.web.href import Href
-from trac.util.datefmt import parse_date
 import re
 
 
@@ -94,7 +90,6 @@ class TicketLinksTransformer(object):
         chrome.add_jquery_ui(req)
         add_script(req,'objectlinking/jquery-ui-autocomplete.js')
         add_script(req,'objectlinking/search-links.js')
-        add_script(req,'objectlinking/extract-ticket.js')
         add_stylesheet(req, 'objectlinking/style.css')
         add_stylesheet(req, 'objectlinking/jquery-ui-custom.css')
         return Transformer('//div[@id="ticket"]').after(content_stream)
@@ -267,3 +262,24 @@ class ObjectLinking(Component):
             self.link_info = None
 
 
+class ExtractTicket(Component):
+    implements(IRequestFilter, ITemplateProvider)
+
+    # IRequestFilter methods
+
+    def pre_process_request(self, req, handler):
+        if re.match(r'/ticket', req.path_info):
+            add_script(req,'objectlinking/extract-ticket.js')
+            add_stylesheet(req, 'objectlinking/extract-style.css')
+        return handler
+
+    def post_process_request(self, req, template, data, content_type):
+        return template, data, content_type
+
+    # ITemplateProvider methods
+
+    def get_templates_dirs(self):
+        return []
+
+    def get_htdocs_dirs(self):
+        return [('objectlinking', pkg_resources.resource_filename('objectlinking', 'htdocs'))]

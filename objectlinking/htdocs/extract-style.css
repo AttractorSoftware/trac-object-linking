@@ -1,0 +1,14 @@
+.extract-ticket-button
+{
+    position: absolute;
+    border: 1px solid gray;
+    border-radius: 5px;
+    padding: 0 6px;
+    height: 20px;
+    background: #d3d3d3;
+    cursor: pointer;
+}
+.extract-ticket-button:hover
+{
+    border: 1px solid black;
+}
